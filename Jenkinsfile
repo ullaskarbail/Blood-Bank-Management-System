@@ -27,16 +27,10 @@ pipeline {
             }
         }
         
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
-                    sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
-                    sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
-                    sh "docker push ${DOCKER_IMAGE}:latest"
-                    sh "docker logout"
-                }
-            }
-        }
+        // Docker push stage temporarily disabled until credentials are added
+        // stage('Push Docker Image') {
+        //     ...
+        // }
         
         stage('Deploy') {
             steps {
