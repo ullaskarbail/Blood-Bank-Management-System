@@ -34,8 +34,16 @@ pipeline {
         
         stage('Deploy') {
             steps {
+                // Generate .env file for docker-compose since it's gitignored
+                sh '''
+                    echo "DB_HOST=db" > .env
+                    echo "DB_USER=root" >> .env
+                    echo "DB_PASSWORD=rootpassword" >> .env
+                    echo "DB_NAME=blood_bank" >> .env
+                    echo "SECRET_KEY=supersecretkey123" >> .env
+                '''
                 // Deploy using docker-compose
-                sh 'docker-compose down'
+                sh 'docker-compose down || true'
                 sh 'docker-compose up -d'
             }
         }
