@@ -1,7 +1,7 @@
 def test_public_index(client):
     response = client.get('/')
     assert response.status_code == 200
-    assert b'Give Blood, Save Life' in response.data
+    assert b'Give the gift of' in response.data
 
 def test_login_page_loads(client):
     response = client.get('/auth/login')
