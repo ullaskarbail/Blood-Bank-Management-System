@@ -22,8 +22,8 @@ pipeline {
         
         stage('Run Tests') {
             steps {
-                // Run pytest inside the built container
-                sh 'docker run --rm -e DB_HOST=localhost -e SECRET_KEY=testkey ${DOCKER_IMAGE}:latest pytest tests/'
+                // Run pytest inside the built container using python -m to set sys.path
+                sh 'docker run --rm -e DB_HOST=localhost -e SECRET_KEY=testkey -e PYTHONPATH=/app ${DOCKER_IMAGE}:latest python -m pytest tests/'
             }
         }
         
