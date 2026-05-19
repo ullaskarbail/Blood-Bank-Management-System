@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Donor Registration</h2>
+<form action="/register" method="post">
+    <div>
+        <label>Name:</label>
+        <input type="text" name="name" required>
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="email" name="email" required>
+    </div>
+    <div>
+        <label>Password:</label>
+        <input type="password" name="password" required>
+    </div>
+    <div>
+        <label>Blood Group:</label>
+        <select name="blood_group" required>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+    </div>
+    <div>
+        <label>Location:</label>
+        <input type="text" name="location" required>
+    </div>
+    <div>
+        <label>Phone:</label>
+        <input type="text" name="phone" required>
+    </div>
+    <button type="submit">Register</button>
+</form>
+{% endblock %}

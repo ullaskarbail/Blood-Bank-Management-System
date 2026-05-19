@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Search Blood Donors</h2>
+<form action="/search" method="post">
+    <div>
+        <label>Blood Group:</label>
+        <select name="blood_group" required>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+    </div>
+    <div>
+        <label>Location (City/Area):</label>
+        <input type="text" name="location" required>
+    </div>
+    <button type="submit">Search</button>
+</form>
+
+{% if results is defined %}
+    <h3>Search Results:</h3>
+    {% if results %}
+        <table>
+            <tr>
+                <th>Donor Name</th>
+                <th>Location</th>
+                <th>Contact Number</th>
+            </tr>
+            {% for r in results %}
+            <tr>
+                <td>{{ r.name }}</td>
+                <td>{{ r.location }}</td>
+                <td>{{ r.phone }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No donors found matching your criteria.</p>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

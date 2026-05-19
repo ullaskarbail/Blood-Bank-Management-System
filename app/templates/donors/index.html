@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Registered Donors</h2>
+    <a href="{{ url_for('donors.register') }}" class="btn btn-primary"><i class="bi bi-person-plus-fill"></i> Add Donor</a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('donors.index') }}" class="row g-3 align-items-center">
+            <div class="col-auto">
+                <label class="col-form-label">Filter by Blood Type:</label>
+            </div>
+            <div class="col-auto">
+                <select name="blood_type" class="form-select">
+                    <option value="">All</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-secondary">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Blood Type</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>Last Donated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in donors %}
+                <tr>
+                    <td>{{ d.id }}</td>
+                    <td>{{ d.name }}</td>
+                    <td>{{ d.age }}</td>
+                    <td><span class="badge bg-danger">{{ d.blood_type }}</span></td>
+                    <td>{{ d.phone }}</td>
+                    <td>{{ d.city }}</td>
+                    <td>{{ d.last_donated or 'Never' }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="7" class="text-center">No donors found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Dashboard</h2>
+
+{% if low_stock %}
+<div class="alert alert-danger shadow-sm">
+    <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Low Stock Alert!</h5>
+    <p class="mb-0">The following blood groups have critically low stock (under 5 units):
+        {% for s in low_stock %}
+            <strong>{{ s.blood_type }}</strong> ({{ s.units }}), 
+        {% endfor %}
+    </p>
+</div>
+{% endif %}
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Total Donors</h5>
+                <h2 class="display-5">{{ total_donors }}</h2>
+                <i class="bi bi-people-fill fs-1 position-absolute top-50 end-0 translate-middle-y me-3 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Total Blood Units</h5>
+                <h2 class="display-5">{{ total_units }}</h2>
+                <i class="bi bi-droplet-fill fs-1 position-absolute top-50 end-0 translate-middle-y me-3 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Pending Requests</h5>
+                <h2 class="display-5">{{ pending_requests }}</h2>
+                <i class="bi bi-clock-history fs-1 position-absolute top-50 end-0 translate-middle-y me-3 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Registered Hospitals</h5>
+                <h2 class="display-5">{{ total_hospitals }}</h2>
+                <i class="bi bi-hospital-fill fs-1 position-absolute top-50 end-0 translate-middle-y me-3 opacity-50"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Inventory Chart</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="inventoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var ctx = document.getElementById('inventoryChart').getContext('2d');
+    var inventoryChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | tojson }},
+            datasets: [{
+                label: 'Available Units',
+                data: {{ data | tojson }},
+                backgroundColor: 'rgba(220, 53, 69, 0.7)',
+                borderColor: 'rgba(220, 53, 69, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

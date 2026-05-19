@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-building-add"></i> Add Hospital</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('hospitals.add') }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Hospital Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" name="city" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-control" name="address" rows="2" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Add Hospital</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-hospital"></i> Registered Hospitals</h5>
+            </div>
+            <div class="card-body p-0 table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in hospitals %}
+                        <tr>
+                            <td><strong>{{ h.name }}</strong></td>
+                            <td>{{ h.city }}</td>
+                            <td>{{ h.phone }}</td>
+                            <td>{{ h.email }}</td>
+                            <td>
+                                <a href="{{ url_for('hospitals.delete', id=h.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this hospital?')"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" class="text-center">No hospitals registered.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Blood Requests</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Patient</th>
+                    <th>Hospital</th>
+                    <th>Blood Type</th>
+                    <th>Units</th>
+                    <th>Urgency</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in requests %}
+                <tr>
+                    <td>{{ r.requested_at.strftime('%Y-%m-%d %H:%M') if r.requested_at else '' }}</td>
+                    <td>{{ r.patient_name }}</td>
+                    <td>{{ r.hospital }}</td>
+                    <td><span class="badge bg-danger">{{ r.blood_type }}</span></td>
+                    <td>{{ r.units_required }}</td>
+                    <td>
+                        {% if r.urgency == 'Critical' %}
+                            <span class="badge bg-dark">Critical</span>
+                        {% elif r.urgency == 'Urgent' %}
+                            <span class="badge bg-warning text-dark">Urgent</span>
+                        {% else %}
+                            <span class="badge bg-info text-dark">Normal</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if r.status == 'Pending' %}
+                            <span class="badge bg-secondary">Pending</span>
+                        {% elif r.status == 'Approved' %}
+                            <span class="badge bg-success">Approved</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if r.status == 'Pending' %}
+                            <a href="{{ url_for('requests.handle_request', id=r.id, action='approve') }}" class="btn btn-sm btn-success" onclick="return confirm('Approve request? This will deduct stock.')"><i class="bi bi-check-lg"></i></a>
+                            <a href="{{ url_for('requests.handle_request', id=r.id, action='reject') }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Reject request?')"><i class="bi bi-x-lg"></i></a>
+                        {% else %}
+                            <span class="text-muted"><i class="bi bi-dash"></i></span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="8" class="text-center">No requests found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
